@@ -26,9 +26,9 @@ Smart Contracts: Solidity
 
 Backend: Node.js/Express.js
 
-Frontend: React.js
+Frontend: HTML/CSS/JS
 
-Database: IPFS (InterPlanetary File System) for distributed storage
+Database: IPFS (InterPlanetary File System) for distributed storage(PINATA)
 
 Authentication: Web3-based authentication
 
