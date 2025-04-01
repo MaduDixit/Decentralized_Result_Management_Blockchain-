@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/loader.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.js"></script>
+  
+    <link
+      href="css/bootstrap.min.css"
+      rel="stylesheet"
+    />  
+    <script src="js/App.js"></script>
+    <script src="node_modules\web3\dist\web3.min.js"></script>
+    <link href="./css/aos.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />    <link rel="stylesheet" href="css/main.css" />
+    <link rel="icon" href="./assets/images/icon.jpg" />
+    <title>Student Dashboard</title>
+  </head>
+
+  <body>
+    <div class="loader-wraper">
+      <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    </div>
+    <div >
+      <i onclick="topFunction()" id="scroll-btn" class="fa-solid fa-angle-up"></i>
+    </div>
+    <!-----------------------------navbBar Start-------------------->
+  <!--NavBar Start-->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light py-3 navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <i class="fa-solid fa-university home_text"></i>
+        <span class="home_text">SPPU</span>Chain
+        </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link " aria-current="page" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link  " href="upload.html">Upload </a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link" href="verify.html">Verify </a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link" href="delete.html">Delete </a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link" href="admin.html">University Login</a>
+          </li>         
+          <li class="nav-item">
+          <a class="nav-link active" href="login.html">Student Login</a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link" href="about.html">Team</a>
+          </li>
+      </ul>
+
+
+      </div>
+    </div>
+    </nav>
+
+<br>
+    <h1 style="text-align:center">Student Portal</h1>
+    <!---------------------NavBar End-------------------->
+
+    <!--=====================Upload Document===========================-->
+      <div class="container">
+        <div class="alert alert-danger d-none mt-2">
+          Please download MetaMask at <a target="_blank" href="https://metamask.io/download">Metamask Site</a>
+         </div>
+        <div class="row content m-1"> 
+
+          <div>
+            <label for="student-id">Enter Student ID:</label>
+            <input type="text" id="student-id">
+            <label for="student-password">Enter Student Password:</label>
+            <div class="password-container">
+                <input type="password" id="student-password">
+                <button type="button" id="show-password-btn"><i class="fa fa-eye" aria-hidden="true"></i></button>
+            </div>
+            <button onclick="selflogincode()" class="add-student-main-button">Get Certificate</button>
+        </div>
+<style>
+.password-container {
+  position: relative;
+}
+
+#student-password {
+  padding-right: 35px; /* Adjust as needed */
+}
+
+#show-password-btn {
+    position: absolute;
+    top: 50%;
+    right: 10px; /* Adjust as needed */
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: white; /* Set text color to white */
+}
+</style>        
+
+        <script>
+          document.getElementById('student-id').addEventListener('submit', async function(event) {
+              event.preventDefault();
+              
+              const studentdoc = parseInt(document.getElementById('studentId').value);
+              co
+
+  
+              // Show loading screen
+              document.getElementById('loadingScreen').style.display = 'flex';
+  
+              // Call the addNewStudent function from app.js
+              await getStudentDocuments(studentdoc);
+  
+              // Hide loading screen after transaction is completed
+              document.getElementById('loadingScreen').style.display = 'none';
+          });
+          document.getElementById('show-password-btn').addEventListener('click', function() {
+    var passwordInput = document.getElementById('student-password');
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        this.textContent = 'Hide Password';
+    } else {
+        passwordInput.type = 'password';
+        this.textContent = 'Show Password';
+    }
+});
+      </script>       
+        <div id="loading" style="display: none;">
+            Loading...
+        </div>
+        
+        <template id="document-item-template">
+            <a class="document-link" target="_blank" rel="noopener noreferrer"></a>
+          </template>
+      </template>
+      <table id="documents-table">
+        <!-- Table content will be dynamically generated -->
+    </table>
+    
+    <div id="document-previews class= preview-container preview-image"></div>
+      <div id="documents-list"></div>
+
+      
+        
+        
+
+ 
+        </div>
+      </div>
+      <style>
+        /* Add CSS styles for the loading screen */
+        .loading-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+        }
+    </style>
+
+
+    <!--=====================Footer===========================-->
+    <div class="footer-dark">
+      <footer>
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6 col-md-3 item">
+              <h3   data-aos="fade-right">Services</h3>
+              <ul  data-aos="zoom-in">
+                <li><a href="#">Ethereum</a></li>
+                <li><a href="#">Blockchain Tech.</a></li>
+                <li><a href="#">Smart Contracts </a></li>
+              </ul>
+            </div>
+            <div class="col-sm-6 col-md-3 item">
+              <h3   data-aos="fade-right">About us</h3>
+              <ul  data-aos="zoom-in">
+                <li><a href="#">Company</a></li>
+                <li><a href="#">Team</a></li>
+              </ul>
+            </div>
+            <div class="col-md-6 item text">
+              <h3  data-aos="fade-right"> 
+                 <i class="fa-solid fa-university"></i>
+                sppu</h3>
+              <!-- <a href="https://www.flaticon.com/free-icons/blockchain" title="blockchain icons">Blockchain icons created by photo3idea_studio - Flaticon</a> -->
+              <p  data-aos="zoom-in">
+
+              </p>
+            </div>
+            <div class="col-md text-center text-md-start">
+              <!-- <h3 data-aos="fade-right">Credits</h3>
+              <ul data-aos="zoom-in">
+                <li>
+                  <a
+                    href="https://undraw.co/illustrations"
+                    title="Indraw illustrations"
+                    >Blockchain illustrations created by undraw</a
+                  >
+                </li>
+                <li>
+                  <a href='https://www.freepik.com/vectors/futuristic-background'>Futuristic background vector created by freepik - www.freepik.com</a>
+                </li>
+                <li>
+                  <a href='https://www.freepik.com/vectors/tech-world'>Tech world vector created by liuzishan - www.freepik.com</a>
+                </li>
+                <li>
+                 <a href="https://unsplash.com/@theshubhamdhage?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"> Photo by Shubham Dhage</a> on <a href="https://unsplash.com/s/photos/blockchain?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+    
+                </li>
+                <li>
+                  <a href="https://www.flaticon.com/free-icons/wings" title="wings icons">Wings icons created by Freepik - Flaticon</a>
+                </li>
+                <li>
+                  <a href="https://loading.io/icon/">Icon Loading  loading.io</a>  
+                </li>
+              </ul> -->
+            </div>
+            <div  data-aos="zoom-in" class="col item social">
+              <a href="#"><i class="fa-brands fa-facebook"></i></a>
+              <a href="#"><i class="fa-brands fa-twitter"></i> </a
+              ><a href="#"><i class="fa-brands fa-github"> </i></a>
+              <a href="#"><i class="fa-brands fa-instagram"> </i> </a>
+            </div>
+          </div>
+          <!-- <p class="copyright">sppu</p> -->
+        </div>
+  
+      </footer>
+    </div>
+    <div><a href="mailto:madura.dixit@gmail.com?subject=From SPPUchain Site"> 
+      <i class="mail-us fa-solid fa-headset"></i>
+    </a>
+    <script src="./js/aos.js"></script>
+    <script src="./js/script.js"></script>
+    <script
+			  src="https://code.jquery.com/jquery-3.6.0.js"
+			  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+			  crossorigin="anonymous"></script>    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="node_modules\web3\dist\web3.min.js"></script>
+    
+    <!--=====================Start Code===========================-->
+    <script defer>
+  document.getElementById("Exporter-address").onclick= ()=>{
+  $("#note").html(``);
+  $("#ExporterBtn").attr("disabled", false);
+  $("#edit").attr("disabled", false);
+  $("#delete").attr("disabled", false);
+}
+ 
+    </script>
+  </body>
+</html>
